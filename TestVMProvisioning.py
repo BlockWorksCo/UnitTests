@@ -51,8 +51,6 @@ def RunVagrantSSHCommand(sshCommand):
     open('sshConfig','w').write(vm.ssh_config())
     out, err = RunCommand('ssh -F sshConfig default -C '+sshCommand)
 
-    assert err == ''
-
     return (out, err)
 
 
@@ -66,8 +64,11 @@ def TestSSH():
     vm  = vagrant.Vagrant()
     assert vm.status()['default'] == 'running' 
 
-    out,err = RunVagrantSSHCommand('ls -la')
+    out,err = RunVagrantSSHCommand('uname -a')
     print(out,err)
+
+    assert err == '', 'stderr was not blank.'
+    assert out == 'Linux raring32-vanilla 3.8.0-19-generic #30-Ubuntu SMP Wed May 1 16:36:13 UTC 2013 i686 i686 i686 GNU/Linux\n', 'uname was not correct: %s'%(err)
 
 
 def TestMSP430Build():
