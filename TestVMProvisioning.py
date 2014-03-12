@@ -46,8 +46,12 @@ def RunVagrantSSHCommand(sshCommand):
     """
     """
     vm  = vagrant.Vagrant()
+
+    assert vm.status()['default'] == 'running' 
     open('sshConfig','w').write(vm.ssh_config())
     out, err = RunCommand('ssh -F sshConfig default -C '+sshCommand)
+
+    assert err == ''
 
     return (out, err)
 
