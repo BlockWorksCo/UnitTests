@@ -34,7 +34,9 @@ def teardown_module():
 def RunCommand(command):
     """
     """
-    p   = subprocess.Popen(shlex.split(command), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    commandList = shlex.split(command)
+    print('Executing '+str(commandList))
+    p   = subprocess.Popen(commandList, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     out,err = p.communicate()
 
     return (out, err)
@@ -45,7 +47,7 @@ def RunVagrantSSHCommand(sshCommand):
     """
     vm  = vagrant.Vagrant()
     open('sshConfig','w').write(vm.ssh_config())
-    out, err = RunCommand('ssh -F sshConfig default -C'+sshCommand)
+    out, err = RunCommand('ssh -F sshConfig default -C '+sshCommand)
 
     return (out, err)
 
