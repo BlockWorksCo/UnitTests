@@ -78,6 +78,12 @@ def TestMSP430Build():
     vm  = vagrant.Vagrant()
     assert vm.status()['default'] == 'running' 
 
+    out,err = RunCommand('bash -c "cd ../Examples/DemoOne && Build PLATFORM=MSP430 clean all"')
+    print(out,err)
+
+    assert err == '', 'stderr was not blank.'
+    assert out == '\n', 'uname was not correct: %s'%(err)
+
 
 def TestSTM32Build():
     """
