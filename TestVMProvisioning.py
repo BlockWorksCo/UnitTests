@@ -5,6 +5,7 @@ import sys
 import vagrant
 import subprocess
 import shlex
+import os
 
 
 
@@ -71,6 +72,34 @@ def TestSSH():
     assert out == 'Linux raring32-vanilla 3.8.0-19-generic #30-Ubuntu SMP Wed May 1 16:36:13 UTC 2013 i686 i686 i686 GNU/Linux\n', 'uname was not correct: %s'%(err)
 
 
+
+
+
+def BuildForPlatform(platformName, binaryName='../Examples/DemoOne/Output/Main'):
+    """
+    """
+    #
+    # Remove the binary.
+    #
+    try:
+        os.remove(binaryName)
+    except OSError:
+        pass
+
+    #
+    # Build the binary.
+    #
+    out,err = RunCommand('bash -c "cd ../Examples/DemoOne && Build PLATFORM=%s clean all"'%(platformName))
+    print(out,err)
+
+    #
+    # Test the binary exists.
+    #
+    assert os.path.exists(binaryName), 'Binary not produced (%s)'%(binaryName)
+    assert out != '', 'no text from build process %s'%(err)
+
+
+
 def TestMSP430Build():
     """
     """
@@ -78,11 +107,8 @@ def TestMSP430Build():
     vm  = vagrant.Vagrant()
     assert vm.status()['default'] == 'running' 
 
-    out,err = RunCommand('bash -c "cd ../Examples/DemoOne && Build PLATFORM=MSP430 clean all"')
-    print(out,err)
+    BuildForPlatform('MSP430')
 
-    assert err == '', 'stderr was not blank.'
-    assert out == '\n', 'uname was not correct: %s'%(err)
 
 
 def TestSTM32Build():
@@ -92,6 +118,8 @@ def TestSTM32Build():
     vm  = vagrant.Vagrant()
     assert vm.status()['default'] == 'running' 
 
+    BuildForPlatform('STM32')
+
 
 def TestLinuxBuild():
     """
@@ -100,13 +128,27 @@ def TestLinuxBuild():
     vm  = vagrant.Vagrant()
     assert vm.status()['default'] == 'running' 
 
+    BuildForPlatform('Linux')
 
-def TestRaspberryPiBuild():
+
+def TestWin32Build():
+    """
+    """
+    print('Window tests')
+    vm  = vagrant.Vagrant()
+    assert vm.status()['default'] == 'running' 
+
+    BuildForPlatform('Win32', binaryName='../Examples/DemoOne/Output/Main.exe')
+
+
+def xTestRaspberryPiBuild():
     """
     """
     print('RaspberryPi tests')
     vm  = vagrant.Vagrant()
     assert vm.status()['default'] == 'running' 
+
+    BuildForPlatform('RPI')
 
 
 
