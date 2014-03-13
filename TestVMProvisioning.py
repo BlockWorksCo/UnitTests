@@ -141,7 +141,7 @@ def TestWin32Build():
     BuildForPlatform('Win32', binaryName='../Examples/DemoOne/Output/Main.exe')
 
 
-def xTestRaspberryPiBuild():
+def TestRaspberryPiBuild():
     """
     """
     print('RaspberryPi tests')
