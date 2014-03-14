@@ -49,6 +49,7 @@ def RunCommand(command):
 
 def TestLinuxDebugger():
     """
+    Blaa
     """
     vm  = vagrant.Vagrant()
     assert vm.status()['default'] == 'running' 
