@@ -7,6 +7,7 @@ import subprocess
 import shlex
 import os
 from Utilities import *
+import pexpect
 
 
 
@@ -55,15 +56,29 @@ def TestLinuxDebugger():
     assert vm.status()['default'] == 'running' 
 
     #
-    #
+    # Build the binary.
     #
     BuildForPlatform('Linux')
 
     #
-    # Build the binary.
+    # Debug the binary.
     #
-    out,err = RunCommand('bash -c "cd ../Examples/DemoOne && Debug Main -ex quit"')
-    print(out,err)
+    child   = pexpect.spawn('bash -c "cd ../Examples/DemoOne && Debug -i mi"')
+    child.expect('\(gdb\) ')
+
+    child.sendline('-file-exec-and-symbols Output/Main')
+    child.expect('\(gdb\) ')
+    print('\n** %s **\n'%child.before)
+
+    child.sendline('-break-insert main')
+    child.expect('\(gdb\) ')
+    print('\n** %s **\n'%child.before)
+
+    child.sendline('-exec-run')
+    child.expect('\(gdb\) ')
+    print('\n** %s **\n'%child.before)
+
+    child.sendline('-gdb-exit')
 
 
 
