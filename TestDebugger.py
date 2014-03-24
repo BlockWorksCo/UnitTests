@@ -78,6 +78,10 @@ def TestLinuxDebugger():
     child.expect('\(gdb\) ')
     print('\n** %s **\n'%child.before)
 
+    child.expect('\(gdb\) ')
+    print('\n** %s **\n'%child.before)
+    assert child.before.find('stopped,reason="breakpoint-hit"') != -1
+
     child.sendline('-gdb-exit')
 
 
