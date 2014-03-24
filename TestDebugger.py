@@ -34,20 +34,6 @@ def teardown_module():
 
 
 
-def RunCommand(command):
-    """
-    """
-    commandList = shlex.split(command)
-    print('Executing '+str(commandList))
-    p   = subprocess.Popen(commandList, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    out,err = p.communicate()
-
-    return (out, err)
-
-
-
-
-
 def TestLinuxDebugger():
     """
     Blaa
