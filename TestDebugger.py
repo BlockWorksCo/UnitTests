@@ -32,11 +32,8 @@ def teardown_module():
 
 
 
-
-
-def TestLinuxDebugger():
+def RunDebuggerTest(platform):
     """
-    Blaa
     """
     vm  = vagrant.Vagrant()
     assert vm.status()['default'] == 'running' 
@@ -44,7 +41,7 @@ def TestLinuxDebugger():
     #
     # Build the binary.
     #
-    BuildForPlatform('Linux')
+    BuildForPlatform(platform)
 
     #
     # Debug the binary.
@@ -71,6 +68,13 @@ def TestLinuxDebugger():
     child.sendline('-gdb-exit')
 
 
+
+
+def TestLinuxDebugger():
+    """
+    Blaa
+    """
+    RunDebuggerTest('Linux')
 
 
 
